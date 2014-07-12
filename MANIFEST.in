@@ -1,4 +1,7 @@
+include MANIFEST.in
+include .gitignore
 include README.md
 include requirements.txt
 include mkdoc.py
+include pre_convert_md_rst_html.py
 include make_GitHub_doc_PyPI/conf/*
