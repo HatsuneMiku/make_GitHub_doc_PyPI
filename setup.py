@@ -71,6 +71,7 @@ else: # to avlid SandboxViolation on mkdir
 
 package_data = {
   PKG_TITLE: [
+    'conf/template_preview.tar.gz',
     'conf/setup.cf'
   ] + pkg_apdx
 }
