@@ -5,6 +5,8 @@ make GitHub doc PyPI (pydoc to markdown, rst and html)
 
 Package Documentation
 
+ - GitHub wiki (module doc) https://github.com/HatsuneMiku/make_GitHub_doc_PyPI/wiki/module_make_GitHub_doc_PyPI
+
  - GitHub repository https://github.com/HatsuneMiku/make_GitHub_doc_PyPI
 
  - PyPI https://pypi.python.org/pypi/make_GitHub_doc_PyPI
