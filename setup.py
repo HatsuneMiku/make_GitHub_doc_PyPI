@@ -49,6 +49,7 @@ data_apdx = [
 R_APDX = [('pre', [
   'css_head.html'
 ])]
+'''
 R_APDX += [('%s/%s' % (R_APDX[0][0], 'css'), [
   'docutils.css',
   'pygments.css',
@@ -56,6 +57,7 @@ R_APDX += [('%s/%s' % (R_APDX[0][0], 'css'), [
   'pypi-screen.css',
   'styles.css'
 ])]
+'''
 data_r_apdx = [map(lambda a: '%s/%s' % (t[0], a), t[1]) for t in R_APDX]
 
 if os.name != 'nt':
