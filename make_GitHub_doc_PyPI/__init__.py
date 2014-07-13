@@ -51,6 +51,36 @@ def openHTML(dst):
     ie.Navigate(re.sub(re.compile(r'\/', re.I), r'\\', dst))
     ie.Quit()
 
+def extract_html(fname, str_html):
+  if not os.path.exists(OUTDIR):
+    os.makedirs(OUTDIR)
+    if not os.path.exists(OUTDIR):
+      print u'cannot create %s' % OUTDIR
+      return
+  tf = os.path.join(os.path.dirname(__file__), TEMPLATE_PREVIEW)
+  tarfile.open(tf, 'r:gz').extractall(OUTDIR)
+  head = open(os.path.join(OUTDIR, CSS_HEAD), 'rb').read()
+  out_html = '%s\n%s' % (head, str_html)
+  dst = os.path.join(OUTDIR, 'pre/%s' % fname)
+  f = open(dst, 'wb')
+  f.write(out_html)
+  f.close()
+  openHTML(dst)
+
+def md_to_html(str_md):
+  # Do not use output of pydoc.HTMLDoc() because of poor design.
+  # So convert to html from markdown created above.
+  initPandoc()
+  md = pandoc.Document()
+  md.markdown = str_md
+  pd = pandoc.Document()
+  pd.rst = md.rst
+  out_html = pd.html
+  rpls = map(lambda a: (re.compile(a[0], re.M|re.S), a[1]), CODE_REPLACEMENTS)
+  for rpl in rpls:
+    out_html = re.sub(rpl[0], rpl[1], out_html)
+  return out_html
+
 def mkdoc(basedir, mdlname):
   r = re.compile(r'''(https://[^\s\']+)''', re.I)
   fn = 'module_%s' % mdlname
@@ -77,30 +107,7 @@ def mkdoc(basedir, mdlname):
       md += ['%s%s' % ('# ' if f else '', outline)]
   out_md = '\x0A'.join(md)
   open(os.path.join(basedir, '%s.md' % fn), 'wb').write(out_md)
-
-  if not os.path.exists(OUTDIR):
-    os.makedirs(OUTDIR)
-    if not os.path.exists(OUTDIR):
-      print u'cannot create %s' % OUTDIR
-      return
-  tf = os.path.join(os.path.dirname(__file__), TEMPLATE_PREVIEW)
-  tarfile.open(tf, 'r:gz').extractall(OUTDIR)
-
-  # Do not use output of pydoc.HTMLDoc() because of poor design.
-  # So convert to html from markdown created above.
-  initPandoc()
-  pd = pandoc.Document()
-  pd.markdown = out_md
-  head = open(os.path.join(OUTDIR, CSS_HEAD), 'rb').read()
-  out_html = '%s\n%s' % (head, pd.html)
-  rpls = map(lambda a: (re.compile(a[0], re.M|re.S), a[1]), CODE_REPLACEMENTS)
-  for rpl in rpls:
-    out_html = re.sub(rpl[0], rpl[1], out_html)
-  dst = os.path.join(OUTDIR, 'pre/%s.html' % fn)
-  f = open(dst, 'wb')
-  f.write(out_html)
-  f.close()
-  openHTML(dst)
+  extract_html('%s.html' % fn, md_to_html(out_md))
 
 def mkdoc_main(basedir):
   cf = os.path.join(basedir, CONFFILE)
