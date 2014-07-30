@@ -2,6 +2,10 @@
 # -*- coding: utf-8 -*-
 '''make_GitHub_doc_PyPI
 make GitHub doc PyPI (pydoc to markdown, rst and html)
+
+>>> import make_GitHub_doc_PyPI as d
+>>> a = d.TestSubClass()
+>>> a.name, a.value
 '''
 
 import sys, os
@@ -15,10 +19,16 @@ __url__ = 'https://github.com/HatsuneMiku/make_GitHub_doc_PyPI'
 __author__ = '999hatsune'
 __author_email__ = '999hatsune@gmail.com'
 
+__all__ = ['mkdoc_main', 'mkdoc',
+  'md_to_html', 'extract_html', 'openHTML', 'initPandoc',
+  'TestSubClass']
+
 import re
 import tarfile
 import pydoc
 import pandoc
+
+from testsubclass import TestSubClass
 
 CONFFILE = u'mkdoc.cf'
 TEMPLATE_PREVIEW = 'conf/template_preview.tar.gz'
